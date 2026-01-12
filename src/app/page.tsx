@@ -1,4 +1,7 @@
 import Image from "next/image";
+import LabelBlock from "./_components/LabelBlock";
+import SectionBlock from "./_components/SectionBlock";
+import ZoneBlock from "./_components/ZoneBlock";
 
 export default function Home() {
   return (
@@ -29,7 +32,7 @@ export default function Home() {
                 <div className="border-purple-400 border-2">Location</div>
               </div>
               <div className="flex justify-between w-full">
-                <div className="border-purple-400 border-2">Job Role</div>
+                <LabelBlock type="bold">Job Role</LabelBlock>
                 <div className="border-purple-400 border-2">Dates</div>
               </div>
               <div>
@@ -59,6 +62,21 @@ export default function Home() {
               </div>
             </div>
           </div>
+
+          <ZoneBlock 
+              sectionLabel={<LabelBlock type='section'>Section</LabelBlock>}
+            >
+              <SectionBlock 
+                company={<LabelBlock>University of Waterloo</LabelBlock>}
+                role={<LabelBlock>Software Engineer</LabelBlock>}
+                location={<LabelBlock>Location</LabelBlock>}
+                dates={<LabelBlock>Dates</LabelBlock>}
+              >
+                <LabelBlock>Desc 1</LabelBlock>
+                <LabelBlock>Desc 2</LabelBlock>
+                <LabelBlock>Desc 3</LabelBlock>
+              </SectionBlock>
+            </ZoneBlock>
 
           <div className="bg-green-600 p-2">
             <div className="text-2xl border-purple-400 border-2 mb-1">Section Label</div>
