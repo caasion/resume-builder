@@ -1,5 +1,6 @@
-import { useDraggable } from '@dnd-kit/core';
+import { useDraggable, useDroppable } from '@dnd-kit/core';
 import { LabelBlockProps } from './LabelBlock';
+import { useState } from 'react';
 
 interface ZoneBlockProps {
   id: string;
@@ -10,7 +11,14 @@ interface ZoneBlockProps {
 export default function ZoneBlock(props: ZoneBlockProps) {
   const { id, sectionLabel, children } = props;
 
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+  // Draggable Properties
+  const { 
+    attributes: dragAttributes, 
+    listeners: dragListeners, 
+    setNodeRef: setDraggableRef, 
+    transform, 
+    isDragging 
+  } = useDraggable({
     id: id,
     data: {
       type: 'zone'
@@ -18,18 +26,36 @@ export default function ZoneBlock(props: ZoneBlockProps) {
   });
 
   const style = transform ? {
-    transform: `translate(${transform.x}px, ${transform.y}px, 0)`,
+    transform: `translate3d(${transform.x}px, ${transform.y}px, ${isDragging ? 3 : 0})`,
     opacity: isDragging ? 0.5 : 1,
     zIndex: isDragging ? 999 : "auto",
   } : undefined;
 
+  // Droppable Properties
+  const { 
+    isOver, 
+    setNodeRef: setDroppableRef 
+  } = useDroppable({
+    id: id,
+    data: {
+      type: 'zone-container',
+      accepts: ['section']
+    },
+  })
+
+  // Combine refs
+  const setRefs = (element: HTMLDivElement | null) => {
+    setDraggableRef(element);
+    setDroppableRef(element);
+  }
+
   return (
     <div 
       className="bg-green-600 p-2 mb-2" 
-      ref={setNodeRef} 
+      ref={setRefs} 
       style={style} 
-      {...listeners} 
-      {...attributes} 
+      {...dragListeners} 
+      {...dragAttributes} 
     >
       {sectionLabel} 
 
