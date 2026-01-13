@@ -32,7 +32,7 @@ export function useResumeDnD() {
       role: 'Software Engineer',
       location: 'blah',
       dates: 'blah',
-      children: ['desc 1'],
+      children: ['desc 1'], 
     }
   });
 
@@ -143,6 +143,12 @@ export function useResumeDnD() {
         
         return updated;
       });
+
+      console.log(sectionId);
+      console.log("removing from inventory")
+
+      // Remove the SectionID from inventory
+      setInventorySectionIds(prev => prev.filter(id => id !== sectionId));
     }
 
     // Section → Inventory
