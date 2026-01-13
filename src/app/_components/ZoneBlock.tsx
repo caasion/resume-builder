@@ -54,10 +54,13 @@ export default function ZoneBlock(props: ZoneBlockProps) {
       className="bg-green-600 p-2 mb-2" 
       ref={setRefs} 
       style={style} 
-      {...dragListeners} 
-      {...dragAttributes} 
     >
-      {sectionLabel} 
+      <div className="flex items-center">
+        <div {...dragListeners} {...dragAttributes} className="cursor-grab p-1">
+          ⋮⋮
+        </div>
+        {sectionLabel}
+      </div>
 
       <hr className="mb-1"></hr>
 

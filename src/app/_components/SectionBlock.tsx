@@ -34,17 +34,22 @@ export default function SectionBlock(props: SectionBlockProps) {
       className="bg-red-700 p-2 mb-2"
       ref={setNodeRef}      // Connects this DOM element to dnd-kit
       style={style}         // Applies the drag transform
-      {...listeners}        // Adds mouse/touch event handlers for dragging
-      {...attributes}       // Adds accessibility attributes
     >
-      <div className="flex justify-between w-ful">
-        <LabelBlock>{company}</LabelBlock>
-        <LabelBlock>{location}</LabelBlock>
-      </div>
-      <div className="flex justify-between w-ful">
-        <LabelBlock>{role}</LabelBlock>
-        <LabelBlock>{dates}</LabelBlock>
-      </div>
+      <div className="flex items-center">
+        <div {...listeners} {...attributes} className="cursor-grab p-1">
+          ⋮⋮ {/* Drag handle icon */}
+        </div>
+        <div className="flex-1">
+          <div className="flex justify-between w-ful">
+            <LabelBlock>{company}</LabelBlock>
+            <LabelBlock>{location}</LabelBlock>
+          </div>
+          <div className="flex justify-between w-ful">
+            <LabelBlock>{role}</LabelBlock>
+            <LabelBlock>{dates}</LabelBlock>
+          </div>
+        </div>
+        </div>
 
       {children}
     </div>
