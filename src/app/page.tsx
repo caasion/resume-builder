@@ -2,11 +2,44 @@
 import LabelBlock from "./_components/LabelBlock";
 import SectionBlock from "./_components/SectionBlock";
 import ZoneBlock from "./_components/ZoneBlock";
-import { closestCenter, DndContext, DragEndEvent, DragOverlay, DragStartEvent, pointerWithin } from "@dnd-kit/core";
+import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, pointerWithin } from "@dnd-kit/core";
 import { useState } from "react";
 import Baseplate from "./_components/Baseplate";
+import { ZonesData, SectionsData } from "@/lib/types";
 
 export default function Home() {
+
+  const [zones, setZones] = useState<ZonesData>({
+    'zone-experience': {
+      id: 'zone-experience',
+      label: 'Experience',
+      sectionIds: ['section-uwaterloo']
+    },
+    'zone-education': {
+      id: 'zone-education',
+      label: 'Education',
+      sectionIds: ['section-mit']
+    }
+  });
+
+  const [sections, setSections] = useState<SectionsData>({
+    'section-uwaterloo': {
+      id: 'section-uwaterloo',
+      company: 'University of Waterloo',
+      role: 'Software Engineer',
+      location: 'blah',
+      dates: 'blah',
+      children: ['desc 1'],
+    },
+    'section-mit': {
+      id: 'section-mit',
+      company: 'MIT',
+      role: 'Software Engineer',
+      location: 'blah',
+      dates: 'blah',
+      children: ['desc 1'],
+    }
+  });
 
   // Manage state of zones that are in the inventory or the baseplate
   const [inventoryZoneIds, setInventoryZoneIds] = useState<string[]>(['zone-experience', 'zone-education']);
@@ -27,9 +60,12 @@ export default function Home() {
 
     // If there is no drop target, then user didn't drop anything valid
     if (!over) return;
+ 
+    const draggedType = active.data.current?.type;
+    const overType = over.data.current?.type;
 
-    // Then, check if a zone was dropped on the baseplate
-    if (over.id === 'baseplate') {
+    // Case 1: Zone → Baseplate
+    if (over.id === 'baseplate' && draggedType === 'zone') {
       const draggedID = active.id as string;
 
       // Check if the zone is in the inventory (or else delete!)
@@ -40,51 +76,74 @@ export default function Home() {
       }
     } 
 
+    // Case 2: Section → Zone
+    if (draggedType === 'section' && overType === 'zone-container') {
+      const sectionId = active.id as string;
+      const targetZoneId = over.id as string;
+
+      setZones(prev => {
+        const updated = { ...prev };
+        
+        // Remove section from all zones
+        Object.keys(updated).forEach(zoneId => {
+          updated[zoneId].sectionIds = updated[zoneId].sectionIds.filter(
+            id => id !== sectionId
+          );
+        });
+        
+        // Add to target zone
+        if (updated[targetZoneId]) {
+          updated[targetZoneId].sectionIds.push(sectionId);
+        }
+
+        console.log(zones);
+        
+        return updated;
+      }); 
+    }
+
   }
 
-  // Helper function to render a zone by ID
+  // Helper function to render a section by ID
+  function renderSection(sectionId: string) {
+    const section = sections[sectionId];
+    
+    if (!section) return null;
+
+    return (
+      <SectionBlock 
+        id={section.id}
+        company={<LabelBlock>{section.company}</LabelBlock>}
+        role={<LabelBlock>{section.role}</LabelBlock>}
+        location={<LabelBlock>{section.location}</LabelBlock>}
+        dates={<LabelBlock>{section.dates}</LabelBlock>}
+      >
+        {section.children.map((desc, index) => (
+          <LabelBlock key={index}>{desc}</LabelBlock>
+        ))}
+      </SectionBlock>
+    );
+  }
+
+  // Updated helper function to render a zone by ID (using state data)
   function renderZone(zoneId: string) {
-    switch(zoneId) {
-      case 'zone-experience':
-        return (
-          <ZoneBlock 
-            id="zone-experience"
-            sectionLabel={<LabelBlock type='section'>Experience</LabelBlock>}
-          >
-            <SectionBlock 
-              id="section-uwaterloo"
-              company={<LabelBlock>University of Waterloo</LabelBlock>}
-              role={<LabelBlock>Software Engineer</LabelBlock>}
-              location={<LabelBlock>Waterloo, ON</LabelBlock>}
-              dates={<LabelBlock>May 2024 - Aug 2024</LabelBlock>}
-            >
-              <LabelBlock>Built resume builder with React</LabelBlock>
-              <LabelBlock>Implemented drag and drop</LabelBlock>
-              <LabelBlock>Learned TypeScript</LabelBlock>
-            </SectionBlock>
-          </ZoneBlock>
-        );
-      case 'zone-education':
-        return (
-          <ZoneBlock 
-            id="zone-education"
-            sectionLabel={<LabelBlock type='section'>Education</LabelBlock>}
-          >
-            <SectionBlock 
-              id="section-mit"
-              company={<LabelBlock>MIT</LabelBlock>}
-              role={<LabelBlock>BS Computer Science</LabelBlock>}
-              location={<LabelBlock>Cambridge, MA</LabelBlock>}
-              dates={<LabelBlock>2020 - 2024</LabelBlock>}
-            >
-              <LabelBlock>GPA: 3.8</LabelBlock>
-              <LabelBlock>Relevant Coursework: Algorithms, Systems</LabelBlock>
-            </SectionBlock>
-          </ZoneBlock>
-        );
-      default:
-        return null;
-    }
+    const zone = zones[zoneId];
+    
+    if (!zone) return null;
+
+    return (
+      <ZoneBlock 
+        id={zone.id}
+        sectionLabel={<LabelBlock type='section'>{zone.label}</LabelBlock>}
+      >
+        {/* Dynamically render all sections that belong to this zone */}
+        {zone.sectionIds.map(sectionId => (
+          <div key={sectionId}>
+            {renderSection(sectionId)}
+          </div>
+        ))}
+      </ZoneBlock>
+    );
   }
 
   return (
@@ -131,43 +190,11 @@ export default function Home() {
               ) : (
                 <>
                   {/* Render Experience Zone if on baseplate */}
-                  {baseplateZoneIds.includes('zone-experience') && (
-                    <ZoneBlock 
-                      id="zone-experience"
-                      sectionLabel={<LabelBlock type='section'>Experience</LabelBlock>}
-                    >
-                      <SectionBlock 
-                        id="section-uwaterloo"
-                        company={<LabelBlock>University of Waterloo</LabelBlock>}
-                        role={<LabelBlock>Software Engineer</LabelBlock>}
-                        location={<LabelBlock>Waterloo, ON</LabelBlock>}
-                        dates={<LabelBlock>May 2024 - Aug 2024</LabelBlock>}
-                      >
-                        <LabelBlock>Built resume builder with React</LabelBlock>
-                        <LabelBlock>Implemented drag and drop</LabelBlock>
-                        <LabelBlock>Learned TypeScript</LabelBlock>
-                      </SectionBlock>
-                    </ZoneBlock> 
-                  )}
-
-                  {/* Render Education Zone if on baseplate */}
-                  {baseplateZoneIds.includes('zone-education') && (
-                    <ZoneBlock 
-                      id="zone-education"
-                      sectionLabel={<LabelBlock type='section'>Education</LabelBlock>}
-                    >
-                      <SectionBlock 
-                        id="section-mit"
-                        company={<LabelBlock>MIT</LabelBlock>}
-                        role={<LabelBlock>BS Computer Science</LabelBlock>}
-                        location={<LabelBlock>Cambridge, MA</LabelBlock>}
-                        dates={<LabelBlock>2020 - 2024</LabelBlock>}
-                      >
-                        <LabelBlock>GPA: 3.8</LabelBlock>
-                        <LabelBlock>Relevant Coursework: Algorithms, Systems</LabelBlock>
-                      </SectionBlock>
-                    </ZoneBlock> 
-                  )}
+                  {baseplateZoneIds.map(zoneId => (
+                    <div key={zoneId}>
+                      {renderZone(zoneId)}
+                    </div>
+                  ))}
                 </>
               )}
             </Baseplate>
@@ -178,7 +205,8 @@ export default function Home() {
         <DragOverlay>
           {activeId ? (
             <div style={{ cursor: 'grabbing' }}>
-              {renderZone(activeId)}
+              {/* Check if dragging a zone or section */}
+              {zones[activeId] ? renderZone(activeId) : renderSection(activeId)}
             </div>
           ) : null}
         </DragOverlay>
