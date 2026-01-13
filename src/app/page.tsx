@@ -4,6 +4,7 @@ import { useResumeDnD } from "@/hooks/useResumeDnd";
 import { createRenderFunctions } from "@/lib/renderers";
 import InventoryPanel from "./_components/InventoryPanel";
 import BaseplatePanel from "./_components/BaseplatePanel";
+import DebugPanel from "./_components/DebugPanel";
 
 export default function Home() {
   const {
@@ -31,7 +32,15 @@ export default function Home() {
         onDragEnd={handleDragEnd}
         collisionDetection={pointerWithin}
       >
-        <div className='grid grid-cols-2'>
+        <div className='grid grid-cols-3'>
+          <DebugPanel 
+            zones={zones}
+            sections={sections}
+            inventorySectionIds={inventorySectionIds}
+            inventoryZoneIds={inventoryZoneIds}
+            baseplateZoneIds={baseplateZoneIds}
+          />
+
           <InventoryPanel 
             zoneIds={inventoryZoneIds}
             sectionIds={inventorySectionIds}
