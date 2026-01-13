@@ -9,34 +9,28 @@ interface LegoBlock {
 
 // Label block: a block that allows for text
 interface LabelBlock extends LegoBlock {
-    positioning: 'relative';
-
     label: string;
     type: 'normal' | 'bold' | 'italic' | 'list';
 }
 
-interface SectionBlock {
-    positioning: 'relative';
+interface SectionBlockData {
+    id: string;
+    company: string;
+    role: string;
+    location: string;
+    dates: string;
+    children: string[];
+}
 
+interface ZoneBlockData {
+    id: string;
     label: string;
-    children: LabelBlock[];
+    sectionIds: string[];
 }
 
-interface ZoneBlock {
-    positioning: 'absolute';
+export type SectionsData = Record<string, SectionBlockData>;
 
-    label: LabelBlock;
-    children: LabelBlock[];
-}
-
-// Baseplate, a unit representing a resume
-interface Baseplate {
-    positioning: 'absolute'
-
-    zones: ZoneBlock[];
-}
-
-
+export type ZonesData = Record<string, ZoneBlockData>
 
 
 
