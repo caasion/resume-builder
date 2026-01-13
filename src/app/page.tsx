@@ -2,7 +2,7 @@
 import LabelBlock from "./_components/LabelBlock";
 import SectionBlock from "./_components/SectionBlock";
 import ZoneBlock from "./_components/ZoneBlock";
-import { closestCenter, DndContext, DragEndEvent } from "@dnd-kit/core";
+import { closestCenter, DndContext, DragEndEvent, DragOverlay, DragStartEvent, pointerWithin } from "@dnd-kit/core";
 import { useState } from "react";
 import Baseplate from "./_components/Baseplate";
 
@@ -12,10 +12,18 @@ export default function Home() {
   const [inventoryZoneIds, setInventoryZoneIds] = useState<string[]>(['zone-experience', 'zone-education']);
   const [baseplateZoneIds, setBaseplateZoneIds] = useState<string[]>([]);
 
-  function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event;
+  // Track the item currently being dragged
+  const [activeId, setActiveId] = useState<string | null>(null);
 
-    // active - item being dragged; over - the drop target
+  function handleDragStart(event: DragStartEvent) {
+    setActiveId(event.active.id as string);
+  }
+
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event; // active - item being dragged; over - the drop target
+
+    setActiveId(null);
 
     // If there is no drop target, then user didn't drop anything valid
     if (!over) return;
@@ -34,12 +42,58 @@ export default function Home() {
 
   }
 
+  // Helper function to render a zone by ID
+  function renderZone(zoneId: string) {
+    switch(zoneId) {
+      case 'zone-experience':
+        return (
+          <ZoneBlock 
+            id="zone-experience"
+            sectionLabel={<LabelBlock type='section'>Experience</LabelBlock>}
+          >
+            <SectionBlock 
+              id="section-uwaterloo"
+              company={<LabelBlock>University of Waterloo</LabelBlock>}
+              role={<LabelBlock>Software Engineer</LabelBlock>}
+              location={<LabelBlock>Waterloo, ON</LabelBlock>}
+              dates={<LabelBlock>May 2024 - Aug 2024</LabelBlock>}
+            >
+              <LabelBlock>Built resume builder with React</LabelBlock>
+              <LabelBlock>Implemented drag and drop</LabelBlock>
+              <LabelBlock>Learned TypeScript</LabelBlock>
+            </SectionBlock>
+          </ZoneBlock>
+        );
+      case 'zone-education':
+        return (
+          <ZoneBlock 
+            id="zone-education"
+            sectionLabel={<LabelBlock type='section'>Education</LabelBlock>}
+          >
+            <SectionBlock 
+              id="section-mit"
+              company={<LabelBlock>MIT</LabelBlock>}
+              role={<LabelBlock>BS Computer Science</LabelBlock>}
+              location={<LabelBlock>Cambridge, MA</LabelBlock>}
+              dates={<LabelBlock>2020 - 2024</LabelBlock>}
+            >
+              <LabelBlock>GPA: 3.8</LabelBlock>
+              <LabelBlock>Relevant Coursework: Algorithms, Systems</LabelBlock>
+            </SectionBlock>
+          </ZoneBlock>
+        );
+      default:
+        return null;
+    }
+  }
+
   return (
     <div className="">
       Resume Builder
       <DndContext 
+        onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
-        collisionDetection={closestCenter} // Algorithm to detect which drop zone you're over
+        collisionDetection={pointerWithin} // Algorithm to detect which drop zone you're over
       >
         <div className='grid grid-cols-2'>
 
@@ -59,44 +113,12 @@ export default function Home() {
               </button>
             </div> 
 
-            {/* Render Experience Zone if in inventory */}
-            {inventoryZoneIds.includes('zone-experience') && (
-              <ZoneBlock 
-                id="zone-experience"
-                sectionLabel={<LabelBlock type='section'>Experience</LabelBlock>}
-              >
-                <SectionBlock 
-                  id="section-uwaterloo"
-                  company={<LabelBlock>University of Waterloo</LabelBlock>}
-                  role={<LabelBlock>Software Engineer</LabelBlock>}
-                  location={<LabelBlock>Waterloo, ON</LabelBlock>}
-                  dates={<LabelBlock>May 2024 - Aug 2024</LabelBlock>}
-                >
-                  <LabelBlock>Built resume builder with React</LabelBlock>
-                  <LabelBlock>Implemented drag and drop</LabelBlock>
-                  <LabelBlock>Learned TypeScript</LabelBlock>
-                </SectionBlock>
-              </ZoneBlock> 
-            )}
-
-            {/* Render Education Zone if in inventory */}
-            {inventoryZoneIds.includes('zone-education') && (
-              <ZoneBlock 
-                id="zone-education"
-                sectionLabel={<LabelBlock type='section'>Education</LabelBlock>}
-              >
-                <SectionBlock 
-                  id="section-mit"
-                  company={<LabelBlock>MIT</LabelBlock>}
-                  role={<LabelBlock>BS Computer Science</LabelBlock>}
-                  location={<LabelBlock>Cambridge, MA</LabelBlock>}
-                  dates={<LabelBlock>2020 - 2024</LabelBlock>}
-                >
-                  <LabelBlock>GPA: 3.8</LabelBlock>
-                  <LabelBlock>Relevant Coursework: Algorithms, Systems</LabelBlock>
-                </SectionBlock>
-              </ZoneBlock> 
-            )}
+            {/* Render zones in inventory */}
+            {inventoryZoneIds.map(zoneId => (
+              <div key={zoneId}>
+                {renderZone(zoneId)}
+              </div>
+            ))}
           </div>
           <div className="border-2 border-sky-500 p-2">
             <h2>Baseplate</h2>
@@ -151,12 +173,16 @@ export default function Home() {
             </Baseplate>
           </div>
         </div>
+
+        {/* DRAG OVERLAY: Creates the ghost image that follows your cursor */}
+        <DragOverlay>
+          {activeId ? (
+            <div style={{ cursor: 'grabbing' }}>
+              {renderZone(activeId)}
+            </div>
+          ) : null}
+        </DragOverlay>
       </DndContext>
     </div>
   );
-
-  
 }
-
-// ZoneBlock is draggable
-// Baseplate is droppable
