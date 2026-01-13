@@ -13,6 +13,7 @@ export default function Home() {
     newSection,
     newLabel,
     inventoryZoneIds,
+    inventorySectionIds,
     baseplateZoneIds,
     activeId,
     handleDragStart,
@@ -33,7 +34,9 @@ export default function Home() {
         <div className='grid grid-cols-2'>
           <InventoryPanel 
             zoneIds={inventoryZoneIds}
+            sectionIds={inventorySectionIds}
             renderZone={renderZone}
+            renderSection={renderSection}
             onCreateZone={newZone}
             onCreateSection={newSection}
             onCreateLabel={newLabel}

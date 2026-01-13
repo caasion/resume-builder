@@ -2,7 +2,9 @@ import Inventory from "./Inventory";
 
 interface InventoryPanelProps {
   zoneIds: string[];
+  sectionIds: string[];
   renderZone: (zoneId: string) => React.ReactNode;
+  renderSection: (sectionId: string) => React.ReactNode;
   onCreateZone?: () => void;
   onCreateSection?: () => void;
   onCreateLabel?: () => void;
@@ -10,7 +12,9 @@ interface InventoryPanelProps {
 
 export default function InventoryPanel({ 
   zoneIds, 
+  sectionIds,
   renderZone,
+  renderSection,
   onCreateZone,
   onCreateSection,
   onCreateLabel 
@@ -47,6 +51,11 @@ export default function InventoryPanel({
         {zoneIds.map(zoneId => (
           <div key={zoneId}>
             {renderZone(zoneId)}
+          </div>
+        ))}
+        {sectionIds.map(zoneId => (
+          <div key={zoneId}>
+            {renderSection(zoneId)}
           </div>
         ))}
       </Inventory>

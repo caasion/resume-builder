@@ -161,7 +161,7 @@ export function useResumeDnD() {
               id => id !== draggedId
             );
           });
-          
+
           return updated;
         });
       }
@@ -175,6 +175,7 @@ export function useResumeDnD() {
     newSection,
     newLabel,
     inventoryZoneIds,
+    inventorySectionIds,
     baseplateZoneIds,
     activeId,
     handleDragStart,
