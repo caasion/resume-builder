@@ -70,6 +70,8 @@ export function useResumeDnD() {
       ...prev,
       [newId]: newSection
     }));
+
+    setInventorySectionIds(prev => [...prev, newId]);
   }
 
   function newLabel() {
@@ -81,6 +83,7 @@ export function useResumeDnD() {
  
   // DRAG DATA STORAGE
   const [inventoryZoneIds, setInventoryZoneIds] = useState<string[]>(['zone-experience', 'zone-education']);
+  const [inventorySectionIds, setInventorySectionIds] = useState<string[]>([]);
   const [baseplateZoneIds, setBaseplateZoneIds] = useState<string[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
 
@@ -100,25 +103,25 @@ export function useResumeDnD() {
 
     // Zone → Baseplate
     if (draggedType === 'zone' && over.id === 'baseplate') {
-      const draggedID = active.id as string;
+      const draggedId = active.id as string;
 
-      if (inventoryZoneIds.includes(draggedID)) {
-        setInventoryZoneIds(prev => prev.filter(id => id !== draggedID));
-        setBaseplateZoneIds(prev => [...prev, draggedID]);
+      if (inventoryZoneIds.includes(draggedId)) {
+        setInventoryZoneIds(prev => prev.filter(id => id !== draggedId));
+        setBaseplateZoneIds(prev => [...prev, draggedId]);
       }
     }
 
     // Zone → Inventory
     if (draggedType === 'zone' && over.id === 'inventory') {
-      const draggedID = active.id as string;
+      const draggedId = active.id as string;
 
-      if (baseplateZoneIds.includes(draggedID)) {
-        setBaseplateZoneIds(prev => prev.filter(id => id !== draggedID));
-        setInventoryZoneIds(prev => [...prev, draggedID]);
+      if (baseplateZoneIds.includes(draggedId)) {
+        setBaseplateZoneIds(prev => prev.filter(id => id !== draggedId));
+        setInventoryZoneIds(prev => [...prev, draggedId]);
       }
     }
 
-    // Case 2: Section → Zone
+    // Section → Zone
     if (draggedType === 'section' && overType === 'zone-container') {
       const sectionId = active.id as string;
       const targetZoneId = over.id as string;
@@ -126,18 +129,42 @@ export function useResumeDnD() {
       setZones(prev => {
         const updated = { ...prev };
         
+        // Remove the sectionID from each zone
         Object.keys(updated).forEach(zoneId => {
           updated[zoneId].sectionIds = updated[zoneId].sectionIds.filter(
             id => id !== sectionId
           );
         });
         
+        // Add te sectionID to the target zone
         if (updated[targetZoneId]) {
           updated[targetZoneId].sectionIds.push(sectionId);
         }
         
         return updated;
       });
+    }
+
+    // Section → Inventory
+    if (draggedType === 'section' && overType === 'inventory') {
+      const draggedId = active.id as string;
+
+      if (!inventorySectionIds.includes(draggedId)) {
+        setInventorySectionIds(prev => [...prev, draggedId]);
+
+        setZones(prev => {
+          const updated = { ...prev };
+          
+          // Remove the sectionID from each zone
+          Object.keys(updated).forEach(zoneId => {
+            updated[zoneId].sectionIds = updated[zoneId].sectionIds.filter(
+              id => id !== draggedId
+            );
+          });
+          
+          return updated;
+        });
+      }
     }
   }
 
