@@ -3,6 +3,7 @@ import { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
 import { ZonesData, SectionsData } from '@/lib/types';
 
 export function useResumeDnD() {
+  // DATA STORAGE
   const [zones, setZones] = useState<ZonesData>({
     'zone-experience': {
       id: 'zone-experience',
@@ -35,10 +36,55 @@ export function useResumeDnD() {
     }
   });
 
+  function newZone() {
+    const newId = crypto.randomUUID();
+
+    setZones(prev => {
+      const newZone = {
+        id: newId,
+        label: "New Zone",
+        sectionIds: [],
+      }
+
+      return {
+        ...prev,
+        [newId]: newZone,
+      };
+    });
+
+    setInventoryZoneIds(prev => [...prev, newId]);
+  }
+
+  function newSection() {
+    const newId = crypto.randomUUID();
+    const newSection = {
+      id: newId,
+      company: 'New Company',
+      role: 'New Role',
+      location: 'Location',
+      dates: 'Dates',
+      children: [],
+    };
+
+    setSections(prev => ({
+      ...prev,
+      [newId]: newSection
+    }));
+  }
+
+  function newLabel() {
+    const newId = crypto.randomUUID();
+
+    console.log("New label not implemeneted")
+    return;
+  }
+ 
+  // DRAG DATA STORAGE
   const [inventoryZoneIds, setInventoryZoneIds] = useState<string[]>(['zone-experience', 'zone-education']);
   const [baseplateZoneIds, setBaseplateZoneIds] = useState<string[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
 
+  // DRAG EVENTS
   function handleDragStart(event: DragStartEvent) {
     setActiveId(event.active.id as string);
   }
@@ -88,6 +134,9 @@ export function useResumeDnD() {
   return {
     zones,
     sections,
+    newZone,
+    newSection,
+    newLabel,
     inventoryZoneIds,
     baseplateZoneIds,
     activeId,

@@ -9,6 +9,9 @@ export default function Home() {
   const {
     zones,
     sections,
+    newZone,
+    newSection,
+    newLabel,
     inventoryZoneIds,
     baseplateZoneIds,
     activeId,
@@ -31,6 +34,9 @@ export default function Home() {
           <InventoryPanel 
             zoneIds={inventoryZoneIds}
             renderZone={renderZone}
+            onCreateZone={newZone}
+            onCreateSection={newSection}
+            onCreateLabel={newLabel}
           />
           
           <BaseplatePanel 
