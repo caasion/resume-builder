@@ -1,3 +1,5 @@
+import Inventory from "./Inventory";
+
 interface InventoryPanelProps {
   zoneIds: string[];
   renderZone: (zoneId: string) => React.ReactNode;
@@ -41,11 +43,14 @@ export default function InventoryPanel({
         </button>
       </div>
 
-      {zoneIds.map(zoneId => (
-        <div key={zoneId}>
-          {renderZone(zoneId)}
-        </div>
-      ))}
+      <Inventory>
+        {zoneIds.map(zoneId => (
+          <div key={zoneId}>
+            {renderZone(zoneId)}
+          </div>
+        ))}
+      </Inventory>
+      
     </div>
   );
 }
