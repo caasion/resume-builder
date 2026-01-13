@@ -98,13 +98,23 @@ export function useResumeDnD() {
     const draggedType = active.data.current?.type;
     const overType = over.data.current?.type;
 
-    // Case 1: Zone → Baseplate
-    if (over.id === 'baseplate' && draggedType === 'zone') {
+    // Zone → Baseplate
+    if (draggedType === 'zone' && over.id === 'baseplate') {
       const draggedID = active.id as string;
 
       if (inventoryZoneIds.includes(draggedID)) {
         setInventoryZoneIds(prev => prev.filter(id => id !== draggedID));
         setBaseplateZoneIds(prev => [...prev, draggedID]);
+      }
+    }
+
+    // Zone → Inventory
+    if (draggedType === 'zone' && over.id === 'inventory') {
+      const draggedID = active.id as string;
+
+      if (baseplateZoneIds.includes(draggedID)) {
+        setBaseplateZoneIds(prev => prev.filter(id => id !== draggedID));
+        setInventoryZoneIds(prev => [...prev, draggedID]);
       }
     }
 
