@@ -18,7 +18,7 @@ export function createRenderFunctions(
     return (
       <LabelBlock
         id={label.id}
-        label={label.id}
+        label={label.label}
         onLabelChange={updateLabel}
       />
     )
