@@ -16,7 +16,7 @@ export default function Baseplate(props: BaseplateProps) {
   };
 
   return (
-    <div ref={setNodeRef} style={style}>
+    <div ref={setNodeRef} style={style} className="h-full">
       {children}
     </div>
   )

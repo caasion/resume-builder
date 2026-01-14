@@ -16,8 +16,8 @@ export default function Inventory(props: InventoryProps) {
   };
 
   return (
-    <div ref={setNodeRef} style={style}>
+    <div ref={setNodeRef} style={style} className="h-full">
       {children}
     </div>
   )
-}
+} 
