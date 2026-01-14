@@ -11,6 +11,11 @@ export default function DroppableSquare(props: DroppableSquareProps) {
 
   const { isOver, setNodeRef } = useDroppable({
     id: x + '-' + y,
+    data: {
+      type: 'grid-cell',
+      x: x,
+      y: x,
+    }
   })
 
   const style = {

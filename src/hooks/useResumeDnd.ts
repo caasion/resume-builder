@@ -173,6 +173,14 @@ export function useResumeDnD() {
     const draggedType = active.data.current?.type;
     const overType = over.data.current?.type;
 
+    // Zone → Grid
+    if (draggedType === 'zone' && overType === 'grid-cell') {
+      const x = over.data.current?.x;
+      const y = over.data.current?.y;
+
+      console.log("zone", active.id, "dropped on grid cell", x, y)
+    }
+
     // Zone → Baseplate
     if (draggedType === 'zone' && over.id === 'baseplate') {
       const draggedId = active.id as string;
