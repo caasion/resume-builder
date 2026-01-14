@@ -79,7 +79,7 @@ export function useResumeDnD() {
 
     setSections(prev => ({
       ...prev,
-      [newId]: newSection
+      [newId]: newSection,
     }));
 
     setInventorySectionIds(prev => [...prev, newId]);
@@ -87,14 +87,25 @@ export function useResumeDnD() {
 
   function newLabel() {
     const newId = crypto.randomUUID();
+    const newLabel = {
+      id: newId,
+      label: "New Label"
+    };
 
-    console.log("New label not implemeneted")
+    setLabels(prev => ({
+      ...prev,
+      [newId]: newLabel,
+    }))
+
+    setInventoryLabelIds(prev => [...prev, newId]);
+
     return;
   }
  
   // DRAG DATA STORAGE
   const [inventoryZoneIds, setInventoryZoneIds] = useState<string[]>(['zone-experience', 'zone-education']);
   const [inventorySectionIds, setInventorySectionIds] = useState<string[]>([]);
+  const [inventoryLabelIds, setInventoryLabelIds] = useState<string[]>([]);
   const [baseplateZoneIds, setBaseplateZoneIds] = useState<string[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
 
