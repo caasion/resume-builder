@@ -34,7 +34,13 @@ export type SectionsData = Record<string, SectionBlockData>;
 
 export type ZonesData = Record<string, ZoneBlockData>
 
+interface BaseplateZoneData {
+    id: string;
+    x: number;
+    y: number;
+    length: number;
+    width: number;
+}
 
-
-
+export type BaseplateZonesData = Record<string, BaseplateZoneData>;
 

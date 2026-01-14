@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
-import { ZonesData, SectionsData, LabelsData } from '@/lib/types';
+import { ZonesData, SectionsData, LabelsData, BaseplateZonesData } from '@/lib/types';
 
 export function useResumeDnD() {
   // DATA STORAGE
@@ -153,11 +153,20 @@ export function useResumeDnD() {
   }
  
   // DRAG DATA STORAGE
-  const [inventoryZoneIds, setInventoryZoneIds] = useState<string[]>(['zone-experience', 'zone-education']);
+  const [inventoryZoneIds, setInventoryZoneIds] = useState<string[]>(['zone-education']);
   const [inventorySectionIds, setInventorySectionIds] = useState<string[]>([]);
   const [inventoryLabelIds, setInventoryLabelIds] = useState<string[]>([]);
-  const [baseplateZoneIds, setBaseplateZoneIds] = useState<string[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
+
+  const [baseplateZoneIds, setBaseplateZoneIds] = useState<BaseplateZonesData>({
+    "zone-experience": {
+      id: "zone-experience",
+      x: 0,
+      y: 0,
+      length: 10,
+      width: 10,
+    }
+  });
 
   // DRAG EVENTS
   function handleDragStart(event: DragStartEvent) {
@@ -181,74 +190,74 @@ export function useResumeDnD() {
       console.log("zone", active.id, "dropped on grid cell", x, y)
     }
 
-    // Zone → Baseplate
-    if (draggedType === 'zone' && over.id === 'baseplate') {
-      const draggedId = active.id as string;
+    // // Zone → Baseplate
+    // if (draggedType === 'zone' && over.id === 'baseplate') {
+    //   const draggedId = active.id as string;
 
-      if (inventoryZoneIds.includes(draggedId)) {
-        setInventoryZoneIds(prev => prev.filter(id => id !== draggedId));
-        setBaseplateZoneIds(prev => [...prev, draggedId]);
-      }
-    }
+    //   if (inventoryZoneIds.includes(draggedId)) {
+    //     setInventoryZoneIds(prev => prev.filter(id => id !== draggedId));
+    //     setBaseplateZoneIds(prev => [...prev, draggedId]);
+    //   }
+    // }
 
-    // Zone → Inventory
-    if (draggedType === 'zone' && over.id === 'inventory') {
-      const draggedId = active.id as string;
+    // // Zone → Inventory
+    // if (draggedType === 'zone' && over.id === 'inventory') {
+    //   const draggedId = active.id as string;
 
-      if (baseplateZoneIds.includes(draggedId)) {
-        setBaseplateZoneIds(prev => prev.filter(id => id !== draggedId));
-        setInventoryZoneIds(prev => [...prev, draggedId]);
-      }
-    }
+    //   if (baseplateZoneIds.includes(draggedId)) {
+    //     setBaseplateZoneIds(prev => prev.filter(id => id !== draggedId));
+    //     setInventoryZoneIds(prev => [...prev, draggedId]);
+    //   }
+    // }
 
-    // Section → Zone
-    if (draggedType === 'section' && overType === 'zone-container') {
-      const sectionId = active.id as string;
-      const targetZoneId = over.id as string;
+    // // Section → Zone
+    // if (draggedType === 'section' && overType === 'zone-container') {
+    //   const sectionId = active.id as string;
+    //   const targetZoneId = over.id as string;
 
-      setZones(prev => {
-        const updated = { ...prev };
+    //   setZones(prev => {
+    //     const updated = { ...prev };
         
-        // Remove the sectionID from each zone
-        Object.keys(updated).forEach(zoneId => {
-          updated[zoneId].sectionIds = updated[zoneId].sectionIds.filter(
-            id => id !== sectionId
-          );
-        });
+    //     // Remove the sectionID from each zone
+    //     Object.keys(updated).forEach(zoneId => {
+    //       updated[zoneId].sectionIds = updated[zoneId].sectionIds.filter(
+    //         id => id !== sectionId
+    //       );
+    //     });
         
-        // Add te sectionID to the target zone
-        if (updated[targetZoneId]) {
-          updated[targetZoneId].sectionIds.push(sectionId);
-        }
+    //     // Add te sectionID to the target zone
+    //     if (updated[targetZoneId]) {
+    //       updated[targetZoneId].sectionIds.push(sectionId);
+    //     }
         
-        return updated;
-      });
+    //     return updated;
+    //   });
 
-      // Remove the SectionID from inventory
-      setInventorySectionIds(prev => prev.filter(id => id !== sectionId));
-    }
+    //   // Remove the SectionID from inventory
+    //   setInventorySectionIds(prev => prev.filter(id => id !== sectionId));
+    // }
 
-    // Section → Inventory
-    if (draggedType === 'section' && over.id === 'inventory') {
-      const draggedId = active.id as string;
+    // // Section → Inventory
+    // if (draggedType === 'section' && over.id === 'inventory') {
+    //   const draggedId = active.id as string;
 
-      if (!inventorySectionIds.includes(draggedId)) {
-        setInventorySectionIds(prev => [...prev, draggedId]);
+    //   if (!inventorySectionIds.includes(draggedId)) {
+    //     setInventorySectionIds(prev => [...prev, draggedId]);
 
-        setZones(prev => {
-          const updated = { ...prev };
+    //     setZones(prev => {
+    //       const updated = { ...prev };
           
-          // Remove the sectionID from each zone
-          Object.keys(updated).forEach(zoneId => {
-            updated[zoneId].sectionIds = updated[zoneId].sectionIds.filter(
-              id => id !== draggedId
-            );
-          });  
+    //       // Remove the sectionID from each zone
+    //       Object.keys(updated).forEach(zoneId => {
+    //         updated[zoneId].sectionIds = updated[zoneId].sectionIds.filter(
+    //           id => id !== draggedId
+    //         );
+    //       });  
 
-          return updated;
-        });
-      }
-    }
+    //       return updated;
+    //     });
+    //   }
+    // }
   }
 
   return {
