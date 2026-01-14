@@ -39,6 +39,7 @@ export default function Home() {
           <DebugPanel 
             zones={zones}
             sections={sections}
+            labels={labels}
             inventorySectionIds={inventorySectionIds}
             inventoryZoneIds={inventoryZoneIds}
             inventoryLabelIds={inventoryLabelIds}
