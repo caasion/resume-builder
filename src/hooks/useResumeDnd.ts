@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
-import { ZonesData, SectionsData } from '@/lib/types';
+import { ZonesData, SectionsData, LabelsData } from '@/lib/types';
 
 export function useResumeDnD() {
   // DATA STORAGE
@@ -35,6 +35,17 @@ export function useResumeDnD() {
       children: ['desc 1'], 
     }
   });
+
+  const [labels, setLabels] = useState<LabelsData>({
+    'label-jobrole1': {
+      id: 'label-jobrole1',
+      label: 'Software Engineer',
+    },
+    'label-jobrole2': {
+      id: 'label-jobrole1',
+      label: 'Data Analyst',
+    },
+  })
 
   function newZone() {
     const newId = crypto.randomUUID();

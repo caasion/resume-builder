@@ -8,9 +8,9 @@ interface LegoBlock {
 }
 
 // Label block: a block that allows for text
-interface LabelBlock extends LegoBlock {
+interface LabelData {
+    id: string;
     label: string;
-    type: 'normal' | 'bold' | 'italic' | 'list';
 }
 
 interface SectionBlockData {
@@ -27,6 +27,8 @@ interface ZoneBlockData {
     label: string;
     sectionIds: string[];
 }
+
+export type LabelsData = Record<string, LabelData>;
 
 export type SectionsData = Record<string, SectionBlockData>;
 
