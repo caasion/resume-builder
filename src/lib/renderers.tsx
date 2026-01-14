@@ -1,9 +1,15 @@
 import LabelBlock from '@/app/_components/LabelBlock';
 import SectionBlock from '@/app/_components/SectionBlock';
 import ZoneBlock from '@/app/_components/ZoneBlock';
+import { useResumeDnD } from "@/hooks/useResumeDnd";
 import { ZonesData, SectionsData, LabelsData } from './types';
 
-export function createRenderFunctions(zones: ZonesData, sections: SectionsData, labels: LabelsData) {
+export function createRenderFunctions(
+  zones: ZonesData, 
+  sections: SectionsData, 
+  labels: LabelsData,
+  updateLabel: (id: string, newValue: string) => void,
+) {
   function renderLabel(labelId: string) {
     const label = labels[labelId];
 
@@ -13,6 +19,7 @@ export function createRenderFunctions(zones: ZonesData, sections: SectionsData, 
       <LabelBlock
         id={label.id}
         label={label.id}
+        onLabelChange={updateLabel}
       />
     )
   }

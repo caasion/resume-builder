@@ -14,6 +14,7 @@ export default function Home() {
     newZone,
     newSection,
     newLabel,
+    updateLabel,
     inventoryZoneIds,
     inventorySectionIds,
     inventoryLabelIds,
@@ -23,7 +24,7 @@ export default function Home() {
     handleDragEnd,
   } = useResumeDnD();
 
-  const { renderSection, renderZone, renderLabel } = createRenderFunctions(zones, sections, labels);
+  const { renderSection, renderZone, renderLabel } = createRenderFunctions(zones, sections, labels, updateLabel);
 
   return (
     <div className="">
