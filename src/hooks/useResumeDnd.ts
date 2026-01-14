@@ -141,6 +141,16 @@ export function useResumeDnD() {
 
     return;
   }
+
+  function updateLabel(id: string, newValue: string) {
+    setLabels(prev => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        label: newValue,
+      }
+    }));
+  }
  
   // DRAG DATA STORAGE
   const [inventoryZoneIds, setInventoryZoneIds] = useState<string[]>(['zone-experience', 'zone-education']);
@@ -240,6 +250,7 @@ export function useResumeDnD() {
     newZone,
     newSection,
     newLabel,
+    updateLabel,
     inventoryZoneIds,
     inventorySectionIds,
     inventoryLabelIds,
