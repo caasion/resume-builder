@@ -144,15 +144,12 @@ export function useResumeDnD() {
         return updated;
       });
 
-      console.log(sectionId);
-      console.log("removing from inventory")
-
       // Remove the SectionID from inventory
       setInventorySectionIds(prev => prev.filter(id => id !== sectionId));
     }
 
     // Section → Inventory
-    if (draggedType === 'section' && overType === 'inventory') {
+    if (draggedType === 'section' && over.id === 'inventory') {
       const draggedId = active.id as string;
 
       if (!inventorySectionIds.includes(draggedId)) {
@@ -166,7 +163,7 @@ export function useResumeDnD() {
             updated[zoneId].sectionIds = updated[zoneId].sectionIds.filter(
               id => id !== draggedId
             );
-          });
+          });  
 
           return updated;
         });
