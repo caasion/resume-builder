@@ -1,22 +1,17 @@
 export interface LabelBlockProps {
-    type?: 'bold' | 'italic' | 'section';
-    children: React.ReactNode;
+  id: string;
+  label: string;
 }
 
 export default function LabelBlock(props: LabelBlockProps) {
-  const { type, children } = props;
+  const { id, label } = props;
 
-  const specialFont = type 
-    ? type == 'bold' || type == 'italic'
-      ? "font-" + type 
-      : type == 'section' 
-        ? 'text-2xl' 
-        : ''
-    : '';
-
-  return (
-    <div className={`border-purple-400 border-2 ${specialFont}`}>
-      {children}
+  // TODO: Render markdown in the label block
+  
+  return ( 
+    <div className={`border-purple-400 border-2`}>
+      {label}
+  
     </div>
   )
 } 
