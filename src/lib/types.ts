@@ -15,16 +15,16 @@ interface LabelData {
 
 interface SectionBlockData {
     id: string;
-    company: string;
-    role: string;
-    location: string;
-    dates: string;
-    children: string[];
+    companyLabelId: string;
+    roleLabelId: string;
+    locationLabelId: string;
+    datesLabelId: string;
+    LabelIds: string[];
 }
 
 interface ZoneBlockData {
     id: string;
-    label: string;
+    labelId: string;
     sectionIds: string[];
 }
 

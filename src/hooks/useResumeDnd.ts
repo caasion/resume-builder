@@ -7,12 +7,12 @@ export function useResumeDnD() {
   const [zones, setZones] = useState<ZonesData>({
     'zone-experience': {
       id: 'zone-experience',
-      label: 'Experience',
+      labelId: 'label-experience',
       sectionIds: ['section-uwaterloo']
     },
     'zone-education': {
       id: 'zone-education',
-      label: 'Education',
+      labelId: 'label-education',
       sectionIds: ['section-mit']
     }
   });
@@ -20,19 +20,19 @@ export function useResumeDnD() {
   const [sections, setSections] = useState<SectionsData>({
     'section-uwaterloo': {
       id: 'section-uwaterloo',
-      company: 'University of Waterloo',
-      role: 'Software Engineer',
-      location: 'blah',
-      dates: 'blah',
-      children: ['desc 1'],
+      companyLabelId: 'label-uwaterloo-company',
+      roleLabelId: 'label-uwaterloo-role',
+      locationLabelId: 'label-uwaterloo-location',
+      datesLabelId: 'label-uwaterloo-dates',
+      LabelIds: ['label-desc-1'],
     },
     'section-mit': {
       id: 'section-mit',
-      company: 'MIT',
-      role: 'Software Engineer',
-      location: 'blah',
-      dates: 'blah',
-      children: ['desc 1'], 
+      companyLabelId: 'label-mit-company',
+      roleLabelId: 'label-mit-role',
+      locationLabelId: 'label-mit-location',
+      datesLabelId: 'label-mit-dates',
+      LabelIds: ['label-desc-1'], 
     }
   });
 
@@ -53,7 +53,7 @@ export function useResumeDnD() {
     setZones(prev => {
       const newZone = {
         id: newId,
-        label: "New Zone",
+        labelId: "label-new-zone",
         sectionIds: [],
       }
 
@@ -70,11 +70,11 @@ export function useResumeDnD() {
     const newId = crypto.randomUUID();
     const newSection = {
       id: newId,
-      company: 'New Company',
-      role: 'New Role',
-      location: 'Location',
-      dates: 'Dates',
-      children: [],
+      companyLabelId: 'label-new-company',
+      roleLabelId: 'label-new-role',
+      locationLabelId: 'label-new-location',
+      datesLabelId: 'label-new-dates',
+      LabelIds: [],
     };
 
     setSections(prev => ({
