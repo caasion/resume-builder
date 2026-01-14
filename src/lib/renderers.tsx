@@ -2,6 +2,18 @@ import LabelBlock from '@/app/_components/LabelBlock';
 import SectionBlock from '@/app/_components/SectionBlock';
 import ZoneBlock from '@/app/_components/ZoneBlock';
 import { ZonesData, SectionsData } from './types';
+  function renderLabel(labelId: string) {
+    const label = labels[labelId];
+
+    if (!label) return null;
+
+    return (
+      <LabelBlock
+        id={label.id}
+        label={label.id}
+      />
+    )
+  }
 
 export function createRenderFunctions(zones: ZonesData, sections: SectionsData) {
   function renderSection(sectionId: string) {
