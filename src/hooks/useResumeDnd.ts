@@ -37,13 +37,53 @@ export function useResumeDnD() {
   });
 
   const [labels, setLabels] = useState<LabelsData>({
-    'label-jobrole1': {
-      id: 'label-jobrole1',
+    // Zone labels
+    'label-experience': {
+      id: 'label-experience',
+      label: 'Experience',
+    },
+    'label-education': {
+      id: 'label-education',
+      label: 'Education',
+    },
+    // UWaterloo section labels
+    'label-uwaterloo-company': {
+      id: 'label-uwaterloo-company',
+      label: 'University of Waterloo',
+    },
+    'label-uwaterloo-role': {
+      id: 'label-uwaterloo-role',
       label: 'Software Engineer',
     },
-    'label-jobrole2': {
-      id: 'label-jobrole1',
-      label: 'Data Analyst',
+    'label-uwaterloo-location': {
+      id: 'label-uwaterloo-location',
+      label: 'Waterloo, ON',
+    },
+    'label-uwaterloo-dates': {
+      id: 'label-uwaterloo-dates',
+      label: 'Jan 2024 - Present',
+    },
+    // MIT section labels
+    'label-mit-company': {
+      id: 'label-mit-company',
+      label: 'MIT',
+    },
+    'label-mit-role': {
+      id: 'label-mit-role',
+      label: 'Research Assistant',
+    },
+    'label-mit-location': {
+      id: 'label-mit-location',
+      label: 'Cambridge, MA',
+    },
+    'label-mit-dates': {
+      id: 'label-mit-dates',
+      label: 'Sep 2022 - Dec 2023',
+    },
+    // Description labels
+    'label-desc-1': {
+      id: 'label-desc-1',
+      label: 'Description placeholder',
     },
   })
 
