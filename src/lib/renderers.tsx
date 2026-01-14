@@ -58,5 +58,5 @@ export function createRenderFunctions(zones: ZonesData, sections: SectionsData, 
     );
   }
 
-  return { renderSection, renderZone };
+  return { renderSection, renderZone, renderLabel };
 }

@@ -196,11 +196,13 @@ export function useResumeDnD() {
   return {
     zones,
     sections,
+    labels,
     newZone,
     newSection,
     newLabel,
     inventoryZoneIds,
     inventorySectionIds,
+    inventoryLabelIds,
     baseplateZoneIds,
     activeId,
     handleDragStart,

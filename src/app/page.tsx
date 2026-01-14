@@ -10,18 +10,20 @@ export default function Home() {
   const {
     zones,
     sections,
+    labels,
     newZone,
     newSection,
     newLabel,
     inventoryZoneIds,
     inventorySectionIds,
+    inventoryLabelIds,
     baseplateZoneIds,
     activeId,
     handleDragStart,
     handleDragEnd,
   } = useResumeDnD();
 
-  const { renderSection, renderZone } = createRenderFunctions(zones, sections);
+  const { renderSection, renderZone, renderLabel } = createRenderFunctions(zones, sections, labels);
 
   return (
     <div className="">
@@ -38,14 +40,17 @@ export default function Home() {
             sections={sections}
             inventorySectionIds={inventorySectionIds}
             inventoryZoneIds={inventoryZoneIds}
+            inventoryLabelIds={inventoryLabelIds}
             baseplateZoneIds={baseplateZoneIds}
           />
 
           <InventoryPanel 
             zoneIds={inventoryZoneIds}
             sectionIds={inventorySectionIds}
+            labelIds={inventoryLabelIds}
             renderZone={renderZone}
             renderSection={renderSection}
+            renderLabel={renderLabel}
             onCreateZone={newZone}
             onCreateSection={newSection}
             onCreateLabel={newLabel}
