@@ -1,7 +1,9 @@
 import LabelBlock from '@/app/_components/LabelBlock';
 import SectionBlock from '@/app/_components/SectionBlock';
 import ZoneBlock from '@/app/_components/ZoneBlock';
-import { ZonesData, SectionsData } from './types';
+import { ZonesData, SectionsData, LabelsData } from './types';
+
+export function createRenderFunctions(zones: ZonesData, sections: SectionsData, labels: LabelsData) {
   function renderLabel(labelId: string) {
     const label = labels[labelId];
 
@@ -15,7 +17,6 @@ import { ZonesData, SectionsData } from './types';
     )
   }
 
-export function createRenderFunctions(zones: ZonesData, sections: SectionsData) {
   function renderSection(sectionId: string) {
     const section = sections[sectionId];
     
@@ -24,13 +25,15 @@ export function createRenderFunctions(zones: ZonesData, sections: SectionsData) 
     return (
       <SectionBlock 
         id={section.id}
-        company={<LabelBlock>{section.company}</LabelBlock>}
-        role={<LabelBlock>{section.role}</LabelBlock>}
-        location={<LabelBlock>{section.location}</LabelBlock>}
-        dates={<LabelBlock>{section.dates}</LabelBlock>}
+        company={renderLabel(section.companyLabelId)}
+        role={renderLabel(section.roleLabelId)}
+        location={renderLabel(section.locationLabelId)}
+        dates={renderLabel(section.datesLabelId)}
       >
-        {section.children.map((desc, index) => (
-          <LabelBlock key={index}>{desc}</LabelBlock>
+        {section.LabelIds.map((labelId) => (
+          <div key={labelId}>
+            {renderLabel(labelId)}
+          </div>
         ))}
       </SectionBlock>
     );
@@ -44,7 +47,7 @@ export function createRenderFunctions(zones: ZonesData, sections: SectionsData) 
     return (
       <ZoneBlock 
         id={zone.id}
-        sectionLabel={<LabelBlock type='section'>{zone.label}</LabelBlock>}
+        sectionLabel={renderLabel(zone.labelId)}
       >
         {zone.sectionIds.map(sectionId => (
           <div key={sectionId}>

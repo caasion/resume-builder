@@ -1,5 +1,5 @@
 import { useDraggable } from "@dnd-kit/core";
-import LabelBlock, { LabelBlockProps } from "./LabelBlock";
+import { LabelBlockProps } from "./LabelBlock";
 
 interface SectionBlockProps {
   id: string;
@@ -41,12 +41,12 @@ export default function SectionBlock(props: SectionBlockProps) {
         </div>
         <div className="flex-1">
           <div className="flex justify-between w-ful">
-            <LabelBlock>{company}</LabelBlock>
-            <LabelBlock>{location}</LabelBlock>
+            {company}
+            {location}
           </div>
           <div className="flex justify-between w-ful">
-            <LabelBlock>{role}</LabelBlock>
-            <LabelBlock>{dates}</LabelBlock>
+            {role}
+            {dates}
           </div>
         </div>
         </div>
