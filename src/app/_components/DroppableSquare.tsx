@@ -14,7 +14,7 @@ export default function DroppableSquare(props: DroppableSquareProps) {
     data: {
       type: 'grid-cell',
       x: x,
-      y: x,
+      y: y,
     }
   })
 
