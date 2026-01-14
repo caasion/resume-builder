@@ -1,4 +1,5 @@
 import { useDroppable } from "@dnd-kit/core";
+import DroppableSquare from "./DroppableSquare";
 
 interface BaseplateProps {
   children: React.ReactNode
@@ -7,17 +8,30 @@ interface BaseplateProps {
 export default function Baseplate(props: BaseplateProps) {
   const { children } = props;
 
-  const { isOver, setNodeRef } = useDroppable({
-    id: 'baseplate'
-  });
+  const gridWidth = 15;
+  const gridLength = 20;
 
-  const style = {
-    color: isOver ? 'green' : undefined,
-  };
+  function renderGrid () {
+    const grid = [];
+
+    for (let i = 0; i < gridWidth; i++) {
+      for (let j = 0; j < gridLength; j++) {
+        grid.push(<DroppableSquare key={i+'-'+j} x={i} y={j} droppable={true} />);
+      }
+    }
+
+    return grid;
+  }
 
   return (
-    <div ref={setNodeRef} style={style} className="h-full">
-      {children}
+    <div 
+      className="grid"
+      style={{
+        gridTemplateColumns: `repeat(${gridWidth}, minmax(0, 1fr))`,
+        gridTemplateRows: `repeat(${gridLength}), minmax(0, 1fr)`
+      }}  
+    >
+      {renderGrid()}
     </div>
   )
 } 
