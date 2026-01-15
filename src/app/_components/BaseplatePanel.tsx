@@ -12,9 +12,7 @@ export default function BaseplatePanel({ baseplateZones, renderZone }: Baseplate
       <h2>Baseplate</h2>
 
       <Baseplate gridWidth={15} gridLength={20}>
-        
-      </Baseplate>
-      {Object.values(baseplateZones).map(zoneData => (
+        {Object.values(baseplateZones).map(zoneData => (
           <div
             key={zoneData.id}
             style={{
@@ -25,6 +23,8 @@ export default function BaseplatePanel({ baseplateZones, renderZone }: Baseplate
             {renderZone(zoneData.id)}
           </div>
         ))}
+      </Baseplate>
+      
     </div>
   );
 } 

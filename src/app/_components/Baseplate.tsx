@@ -23,16 +23,29 @@ export default function Baseplate(props: BaseplateProps) {
   }
 
   return (
-    <div 
-      className="grid"
-      style={{
-        gridTemplateColumns: `repeat(${gridWidth}, minmax(0, 1fr))`,
-        gridTemplateRows: `repeat(${gridLength}), minmax(0, 1fr)`
-      }}  
-    >
-      {renderGrid()}
+    <div className="relative h-full">
+      <div 
+        className="grid" 
+        style={{
+          gridTemplateColumns: `repeat(${gridWidth}, minmax(0, 1fr))`,
+          gridTemplateRows: `repeat(${gridLength}), minmax(0, 1fr)`
+        }}  
+      >
+        {renderGrid()}
 
-      {children}
+        
+      </div>
+      <div 
+        className="absolute grid w-full h-full inset-0 pointer-events-none"
+        style={{
+          gridTemplateColumns: `repeat(${gridWidth}, minmax(0, 1fr))`,
+          gridTemplateRows: `repeat(${gridLength}), minmax(0, 1fr)`,
+        }}  
+      >
+        {children}
+      </div>
     </div>
   )
 } 
+
+//     

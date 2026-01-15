@@ -51,7 +51,7 @@ export default function ZoneBlock(props: ZoneBlockProps) {
 
   return (
     <div 
-      className="bg-green-600 p-2 mb-2" 
+      className="bg-green-600 p-2 mb-2 pointer-events-auto" 
       ref={setRefs} 
       style={style} 
     >
