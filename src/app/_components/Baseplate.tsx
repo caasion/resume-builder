@@ -14,8 +14,8 @@ export default function Baseplate(props: BaseplateProps) {
   function renderGrid () {
     const grid = [];
 
-    for (let i = 0; i < gridWidth; i++) {
-      for (let j = 0; j < gridLength; j++) {
+    for (let i = 0; i < gridLength; i++) {
+      for (let j = 0; j < gridWidth; j++) {
         grid.push(<DroppableSquare key={i+'-'+j} x={i} y={j} droppable={true} />);
       }
     }
