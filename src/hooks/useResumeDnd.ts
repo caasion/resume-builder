@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
-import { ZonesData, SectionsData, LabelsData, BaseplateZonesData } from '@/lib/types';
+import { ZonesData, SectionsData, LabelsData, BaseplateZonesData, BaseplateZoneData } from '@/lib/types';
 
 export function useResumeDnD() {
   // DATA STORAGE
@@ -162,11 +162,25 @@ export function useResumeDnD() {
     "zone-experience": {
       id: "zone-experience",
       x: 0,
-      y: 0,
+      y: 2,
       length: 10,
       width: 10,
     }
   });
+
+  function updateBaseplateZone(
+    zoneId: string, 
+    updates: Omit<Partial<BaseplateZoneData>, 'id'>
+  ) {
+    setBaseplateZones(prev => ({
+          ...prev,
+          [zoneId]: {
+            ...prev[zoneId],
+            ...updates
+          }
+        })
+      )
+  }
 
   // DRAG EVENTS
   function handleDragStart(event: DragStartEvent) {
@@ -187,18 +201,11 @@ export function useResumeDnD() {
       const x = over.data.current?.x;
       const y = over.data.current?.y;
 
-      setBaseplateZones(prev => {
-        const dropped = baseplateZones[active.id];
+      console.log("zone", active.id, "dropped on grid cell", x, y);
 
-        return {
-          ...prev,
-          [active.id]: {
-            ...prev[active.id],
-            x: x,
-            y: y,
-          }
-        }
-      })
+      // TODO: Add checks for block-block collision and block-edge collision
+
+      updateBaseplateZone(active.id as string, {x, y});
     }
 
     // // Zone → Baseplate
@@ -283,6 +290,7 @@ export function useResumeDnD() {
     inventorySectionIds,
     inventoryLabelIds,
     baseplateZones,
+    updateBaseplateZone,
     activeId,
     handleDragStart,
     handleDragEnd,

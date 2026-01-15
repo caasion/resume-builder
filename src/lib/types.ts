@@ -34,7 +34,7 @@ export type SectionsData = Record<string, SectionBlockData>;
 
 export type ZonesData = Record<string, ZoneBlockData>
 
-interface BaseplateZoneData {
+export interface BaseplateZoneData {
     id: string;
     x: number;
     y: number;
