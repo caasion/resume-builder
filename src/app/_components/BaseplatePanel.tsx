@@ -1,14 +1,16 @@
-import { BaseplateZoneData, BaseplateZonesData } from '@/lib/types';
+import { BaseplateZoneData, BaseplateZonesData, ZoneBlockData, ZonesData } from '@/lib/types';
 import Baseplate from './Baseplate';
 import ResizeableBlock from './ResizeableBlock';
 
 interface BaseplatePanelProps {
+  zones: ZonesData;
   baseplateZones: BaseplateZonesData;
   renderZone: (zoneId: string) => React.ReactNode;
-  onResizeZone: (zoneId: string, updates: Omit<Partial<BaseplateZoneData>, "id">) => void;
+  onResizeZone: (zoneId: string, updates: Omit<Partial<ZoneBlockData>, "id">) => void;
 }
 
 export default function BaseplatePanel({ 
+  zones,
   baseplateZones, 
   renderZone,
   onResizeZone,
@@ -18,23 +20,31 @@ export default function BaseplatePanel({
       <h2>Baseplate</h2>
 
       <Baseplate gridWidth={15} gridLength={20}>
-        {Object.values(baseplateZones).map(zoneData => (
-          <div
-            key={zoneData.id}
-            className="pointer-events-auto"
-            style={{
-              gridColumn: `${zoneData.x + 1} / span ${zoneData.width}`,
-              gridRow: `${zoneData.y + 1} / span ${zoneData.length}`,
-            }}
-          >
-            <ResizeableBlock
-              {...zoneData}
-              onResize={(newWidth: number, newLength: number) => onResizeZone(zoneData.id, { width: newWidth, length: newLength})}
+        {Object.values(baseplateZones).map(baseplateZoneData => {
+          const { id, x, y } = baseplateZoneData;
+          const { width, length } = zones[id];
+
+          return (
+            <div
+              key={id}
+              className="pointer-events-auto"
+              style={{
+                gridColumn: `${x + 1} / span ${width}`,
+                gridRow: `${y + 1} / span ${length}`,
+              }}
             >
-              {renderZone(zoneData.id)}
-            </ResizeableBlock>
-          </div>
-        ))}
+              <ResizeableBlock
+                {...baseplateZoneData}
+                width={width}
+                length={length}
+                onResize={(newWidth: number, newLength: number) => onResizeZone(id, { width: newWidth, length: newLength})}
+              >
+                {renderZone(id)}
+              </ResizeableBlock>
+            </div>
+          )
+        }
+      )}
       </Baseplate>
       
     </div>
