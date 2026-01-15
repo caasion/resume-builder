@@ -23,12 +23,12 @@ export default function Baseplate(props: BaseplateProps) {
   }
 
   return (
-    <div className="relative h-full">
+    <div className="relative w-full">
       <div 
         className="grid" 
         style={{
           gridTemplateColumns: `repeat(${gridWidth}, minmax(0, 1fr))`,
-          gridTemplateRows: `repeat(${gridLength}), minmax(0, 1fr)`
+          gridTemplateRows: `repeat(${gridLength}, minmax(0, 1fr))`
         }}  
       >
         {renderGrid()}
@@ -39,7 +39,7 @@ export default function Baseplate(props: BaseplateProps) {
         className="absolute grid w-full h-full inset-0 pointer-events-none"
         style={{
           gridTemplateColumns: `repeat(${gridWidth}, minmax(0, 1fr))`,
-          gridTemplateRows: `repeat(${gridLength}), minmax(0, 1fr)`,
+          gridTemplateRows: `repeat(${gridLength}, minmax(0, 1fr))`,
         }}  
       >
         {children}
@@ -48,4 +48,4 @@ export default function Baseplate(props: BaseplateProps) {
   )
 } 
 
-//     
+// 
