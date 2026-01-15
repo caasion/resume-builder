@@ -14,6 +14,8 @@ export default function Home() {
     newZone,
     newSection,
     newLabel,
+    updateZone,
+    updateSection,
     updateLabel,
     inventoryZoneIds,
     inventorySectionIds,
@@ -59,10 +61,11 @@ export default function Home() {
             onCreateLabel={newLabel}
           />
           
-          <BaseplatePanel 
+          <BaseplatePanel
+            zones={zones}
             baseplateZones={baseplateZones}
             renderZone={renderZone}
-            onResizeZone={updateBaseplateZone}
+            onResizeZone={updateZone}
           />
         </div>
 

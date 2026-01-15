@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
-import { ZonesData, SectionsData, LabelsData, BaseplateZonesData, BaseplateZoneData } from '@/lib/types';
+import { ZonesData, SectionsData, LabelsData, BaseplateZonesData, BaseplateZoneData, ZoneBlockData } from '@/lib/types';
 
 export function useResumeDnD() {
   // DATA STORAGE
@@ -148,6 +148,26 @@ export function useResumeDnD() {
     return;
   }
 
+  function updateZone(zoneId: string, updates: Omit<Partial<ZoneBlockData>, 'id'>) {
+    setZones(prev => ({
+      ...prev,
+      [zoneId]: {
+        ...prev[zoneId],
+        ...updates,
+      }
+    }))
+  }
+
+  function updateSection(sectionId: string, updates: Omit<Partial<SectionBlockData>, 'id'>) {
+    setSections(prev => ({
+      ...prev,
+      [sectionId]: {
+        ...prev[sectionId],
+        ...updates,
+      }
+    }))
+  }
+
   function updateLabel(id: string, newValue: string) {
     setLabels(prev => ({
       ...prev,
@@ -200,16 +220,32 @@ export function useResumeDnD() {
     const draggedType = active.data.current?.type;
     const overType = over.data.current?.type;
 
-    // Zone → Grid
+    // Zone: → Grid
     if (draggedType === 'zone' && overType === 'grid-cell') {
+      const draggedId = active.id as string;
+
       const x = over.data.current?.x;
       const y = over.data.current?.y;
 
-      console.log("zone", active.id, "dropped on grid cell", x, y);
+      // Grid → Grid
+      if (Object.keys(baseplateZones).includes(draggedId)) {
+        // TODO: Add checks for block-block collision and block-edge collision
 
-      // TODO: Add checks for block-block collision and block-edge collision
-
-      updateBaseplateZone(active.id as string, {x, y});
+        updateBaseplateZone(draggedId, {x, y});
+      } 
+      // Inventory → Grid
+      else {
+        setBaseplateZones(prev => ({
+          ...prev,
+          [draggedId]: {
+            id: draggedId,
+            x: x,
+            y: y,
+          }
+        }));
+        setInventoryZoneIds(prev => prev.filter(zoneId => zoneId !== draggedId)); 
+      }
+      
     }
 
     // // Zone → Baseplate
@@ -222,15 +258,21 @@ export function useResumeDnD() {
     //   }
     // }
 
-    // // Zone → Inventory
-    // if (draggedType === 'zone' && over.id === 'inventory') {
-    //   const draggedId = active.id as string;
+    // Zone: Zone → Inventory
+    if (draggedType === 'zone' && over.id === 'inventory') {
+      const draggedId = active.id as string;
 
-    //   if (baseplateZoneIds.includes(draggedId)) {
-    //     setBaseplateZoneIds(prev => prev.filter(id => id !== draggedId));
-    //     setInventoryZoneIds(prev => [...prev, draggedId]);
-    //   }
-    // }
+      if (Object.keys(baseplateZones).includes(draggedId)) {
+        setBaseplateZones(prev => {
+          const curr = {...prev};
+          
+          delete curr[draggedId];
+
+          return curr
+        });
+        setInventoryZoneIds(prev => [...prev, draggedId]);
+      }
+    }
 
     // // Section → Zone
     // if (draggedType === 'section' && overType === 'zone-container') {
@@ -289,6 +331,8 @@ export function useResumeDnD() {
     newZone,
     newSection,
     newLabel,
+    updateZone,
+    updateSection,
     updateLabel,
     inventoryZoneIds,
     inventorySectionIds,
