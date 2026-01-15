@@ -1,4 +1,6 @@
+import { useResumeDnD } from "@/hooks/useResumeDnd";
 import Inventory from "./Inventory";
+import DisplayBlock from "./DisplayBlock";
 
 interface InventoryPanelProps {
   zoneIds: string[];
@@ -23,6 +25,8 @@ export default function InventoryPanel({
   onCreateSection,
   onCreateLabel 
 }: InventoryPanelProps) {
+  const { zones } = useResumeDnD();
+
   return (
     <div className="border-2 border-amber-500 p-2">
       <h2>Inventory</h2>
@@ -53,9 +57,13 @@ export default function InventoryPanel({
 
       <Inventory>
         {zoneIds.map(zoneId => (
-          <div key={zoneId}>
+          <DisplayBlock 
+            key={zoneId}
+            width={zones[zoneId].width}
+            length={zones[zoneId].length}
+          >
             {renderZone(zoneId)}
-          </div>
+          </DisplayBlock>
         ))}
         {sectionIds.map(sectionId => (
           <div key={sectionId}>

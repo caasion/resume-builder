@@ -71,8 +71,17 @@ export default function Home() {
 
         <DragOverlay>
           {activeId ? (
-            <div style={{ cursor: 'grabbing' }} className="opacity-50">
-              {zones[activeId] ? renderZone(activeId) : renderSection(activeId)}
+            <div style={{ cursor: 'grabbing' }} className="opacity-50 w-fit h-fit">
+              {zones[activeId] 
+                ? (
+                  <DisplayBlock 
+                    width={zones[activeId].width}
+                    length={zones[activeId].length}
+                  >
+                    {renderZone(activeId)}
+                  </DisplayBlock>
+                ) 
+                : renderSection(activeId)}
             </div>
           ) : null}
         </DragOverlay>
