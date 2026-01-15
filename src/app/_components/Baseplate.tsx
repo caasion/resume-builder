@@ -29,7 +29,7 @@ export default function Baseplate(props: BaseplateProps) {
   }
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-fit">
       <div 
         className="grid" 
         style={gridStyles}  

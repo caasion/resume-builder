@@ -15,11 +15,14 @@ export default function BaseplatePanel({
   renderZone,
   onResizeZone,
 }: BaseplatePanelProps) {
+  const gridWidth = 15;
+  const gridLength = 20;
+
   return (
     <div className="border-2 border-sky-500 p-2">
       <h2>Baseplate</h2>
 
-      <Baseplate gridWidth={15} gridLength={20}>
+      <Baseplate gridWidth={gridWidth} gridLength={gridLength}>
         {Object.values(baseplateZones).map(baseplateZoneData => {
           const { id, x, y } = baseplateZoneData;
           const { width, length } = zones[id];
@@ -37,6 +40,8 @@ export default function BaseplatePanel({
                 {...baseplateZoneData}
                 width={width}
                 length={length}
+                maxWidth={gridWidth - x}
+                maxLength={gridLength - y}
                 onResize={(newWidth: number, newLength: number) => onResizeZone(id, { width: newWidth, length: newLength})}
               >
                 {renderZone(id)}

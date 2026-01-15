@@ -6,6 +6,8 @@ interface ResizeableZoneProps {
   width: number;
   length: number;
   onResize: (newWidth: number, newLength: number) => void;
+  maxWidth?: number;
+  maxLength?: number;
   minWidth?: number;
   minLength?: number;
 }
@@ -15,6 +17,8 @@ export default function ResizableBlock({
   width,
   length,
   onResize,
+  maxWidth,
+  maxLength,
   minWidth = 0,
   minLength = 0,
 }: ResizeableZoneProps) {
@@ -58,9 +62,11 @@ export default function ResizableBlock({
     // Apply changes based on direction
     if (resizeDirectionRef.current === 'se' || resizeDirectionRef.current === 'e') {
       newWidth = Math.max(minWidth, startSizeRef.current.width + gridDeltaX);
+      if (maxWidth) newWidth = Math.min(maxWidth, newWidth);
     }
     if (resizeDirectionRef.current === 'se' || resizeDirectionRef.current === 's') {
       newLength = Math.max(minLength, startSizeRef.current.length + gridDeltaY);
+      if (maxLength) newLength = Math.min(maxLength, newLength);
     }
 
     // Only update if size actually changed
