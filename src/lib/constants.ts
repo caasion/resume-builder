@@ -1,1 +1,1 @@
-export const GRID_SQUARE_SIZE = 2;
+export const GRID_SQUARE_SIZE = 2; // Unit: REM

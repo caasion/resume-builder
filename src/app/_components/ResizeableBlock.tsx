@@ -49,8 +49,8 @@ export default function ResizableBlock({
     const deltaY = e.clientY - startPosRef.current.y;
 
     // Convert pixel deltas to grid units
-    const gridDeltaX = Math.round(deltaX / GRID_SQUARE_SIZE);
-    const gridDeltaY = Math.round(deltaY / GRID_SQUARE_SIZE);
+    const gridDeltaX = Math.round(deltaX / (GRID_SQUARE_SIZE * 16));
+    const gridDeltaY = Math.round(deltaY / (GRID_SQUARE_SIZE * 16));
 
     let newWidth = startSizeRef.current.width;
     let newLength = startSizeRef.current.length;
