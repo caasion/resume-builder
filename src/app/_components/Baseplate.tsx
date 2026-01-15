@@ -1,5 +1,6 @@
 import { useDroppable } from "@dnd-kit/core";
 import DroppableSquare from "./DroppableSquare";
+import { GRID_SQUARE_SIZE } from "@/lib/constants";
 
 interface BaseplateProps {
   gridWidth: number;
@@ -9,6 +10,11 @@ interface BaseplateProps {
 
 export default function Baseplate(props: BaseplateProps) {
   const { gridWidth, gridLength, children } = props;
+
+  const gridStyles = {
+    gridTemplateColumns: `repeat(${gridWidth}, ${GRID_SQUARE_SIZE}rem)`,
+    gridTemplateRows: `repeat(${gridLength}, ${GRID_SQUARE_SIZE}rem)`
+  }
 
   function renderGrid () {
     const grid = [];
@@ -26,10 +32,7 @@ export default function Baseplate(props: BaseplateProps) {
     <div className="relative w-full">
       <div 
         className="grid" 
-        style={{
-          gridTemplateColumns: `repeat(${gridWidth}, minmax(0, 1fr))`,
-          gridTemplateRows: `repeat(${gridLength}, minmax(0, 1fr))`
-        }}  
+        style={gridStyles}  
       >
         {renderGrid()}
 
@@ -37,10 +40,7 @@ export default function Baseplate(props: BaseplateProps) {
       </div>
       <div 
         className="absolute grid w-full h-full inset-0 pointer-events-none"
-        style={{
-          gridTemplateColumns: `repeat(${gridWidth}, minmax(0, 1fr))`,
-          gridTemplateRows: `repeat(${gridLength}, minmax(0, 1fr))`,
-        }}  
+        style={gridStyles}  
       >
         {children}
       </div>

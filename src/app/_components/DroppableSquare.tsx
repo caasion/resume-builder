@@ -26,7 +26,7 @@ export default function DroppableSquare(props: DroppableSquareProps) {
     <div 
       ref={setNodeRef}
       style={style}
-      className="w-full h-full aspect-square border border-gray-300" 
+      className="w-full h-full aspect-square border border-gray-300 text-xs" 
     >
       {x}-{y}
     </div>

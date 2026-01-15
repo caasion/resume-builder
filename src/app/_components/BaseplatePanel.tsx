@@ -15,6 +15,7 @@ export default function BaseplatePanel({ baseplateZones, renderZone }: Baseplate
         {Object.values(baseplateZones).map(zoneData => (
           <div
             key={zoneData.id}
+            className="pointer-events-auto"
             style={{
               gridColumn: `${zoneData.x + 1} / span ${zoneData.width}`,
               gridRow: `${zoneData.y + 1} / span ${zoneData.length}`,
