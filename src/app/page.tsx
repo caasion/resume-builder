@@ -19,6 +19,7 @@ export default function Home() {
     inventorySectionIds,
     inventoryLabelIds,
     baseplateZones,
+    updateBaseplateZone,
     activeId,
     handleDragStart,
     handleDragEnd,
@@ -61,11 +62,13 @@ export default function Home() {
           <BaseplatePanel 
             baseplateZones={baseplateZones}
             renderZone={renderZone}
+            onResizeZone={updateBaseplateZone}
           />
         </div>
 
         <DragOverlay>
           {activeId ? (
+            <div style={{ cursor: 'grabbing' }} className="opacity-50">
               {zones[activeId] ? renderZone(activeId) : renderSection(activeId)}
             </div>
           ) : null}
@@ -73,4 +76,5 @@ export default function Home() {
       </DndContext>
     </div>
   );
-}
+} 
+

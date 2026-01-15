@@ -1,12 +1,18 @@
-import { BaseplateZonesData } from '@/lib/types';
+import { BaseplateZoneData, BaseplateZonesData } from '@/lib/types';
 import Baseplate from './Baseplate';
+import ResizeableBlock from './ResizeableBlock';
 
 interface BaseplatePanelProps {
   baseplateZones: BaseplateZonesData;
   renderZone: (zoneId: string) => React.ReactNode;
+  onResizeZone: (zoneId: string, updates: Omit<Partial<BaseplateZoneData>, "id">) => void;
 }
 
-export default function BaseplatePanel({ baseplateZones, renderZone }: BaseplatePanelProps) {
+export default function BaseplatePanel({ 
+  baseplateZones, 
+  renderZone,
+  onResizeZone,
+}: BaseplatePanelProps) {
   return (
     <div className="border-2 border-sky-500 p-2">
       <h2>Baseplate</h2>
@@ -21,7 +27,12 @@ export default function BaseplatePanel({ baseplateZones, renderZone }: Baseplate
               gridRow: `${zoneData.y + 1} / span ${zoneData.length}`,
             }}
           >
-            {renderZone(zoneData.id)}
+            <ResizeableBlock
+              {...zoneData}
+              onResize={(newWidth: number, newLength: number) => onResizeZone(zoneData.id, { width: newWidth, length: newLength})}
+            >
+              {renderZone(zoneData.id)}
+            </ResizeableBlock>
           </div>
         ))}
       </Baseplate>
