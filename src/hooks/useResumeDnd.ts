@@ -158,7 +158,7 @@ export function useResumeDnD() {
   const [inventoryLabelIds, setInventoryLabelIds] = useState<string[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
 
-  const [baseplateZoneIds, setBaseplateZoneIds] = useState<BaseplateZonesData>({
+  const [baseplateZones, setBaseplateZones] = useState<BaseplateZonesData>({
     "zone-experience": {
       id: "zone-experience",
       x: 0,
@@ -271,9 +271,9 @@ export function useResumeDnD() {
     inventoryZoneIds,
     inventorySectionIds,
     inventoryLabelIds,
-    baseplateZoneIds,
+    baseplateZones,
     activeId,
     handleDragStart,
     handleDragEnd,
   };
-}
+} 

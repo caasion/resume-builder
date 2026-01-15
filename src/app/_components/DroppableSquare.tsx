@@ -28,7 +28,7 @@ export default function DroppableSquare(props: DroppableSquareProps) {
       style={style}
       className="w-full h-full aspect-square border border-gray-300" 
     >
-      x
+      {x}-{y}
     </div>
   )
 }

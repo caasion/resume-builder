@@ -2,14 +2,13 @@ import { useDroppable } from "@dnd-kit/core";
 import DroppableSquare from "./DroppableSquare";
 
 interface BaseplateProps {
-  children: React.ReactNode
+  gridWidth: number;
+  gridLength: number;
+  children: React.ReactNode;
 }
 
 export default function Baseplate(props: BaseplateProps) {
-  const { children } = props;
-
-  const gridWidth = 15;
-  const gridLength = 20;
+  const { gridWidth, gridLength, children } = props;
 
   function renderGrid () {
     const grid = [];
@@ -32,6 +31,8 @@ export default function Baseplate(props: BaseplateProps) {
       }}  
     >
       {renderGrid()}
+
+      {children}
     </div>
   )
 } 

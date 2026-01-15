@@ -18,7 +18,7 @@ export default function Home() {
     inventoryZoneIds,
     inventorySectionIds,
     inventoryLabelIds,
-    baseplateZoneIds,
+    baseplateZones,
     activeId,
     handleDragStart,
     handleDragEnd,
@@ -59,14 +59,13 @@ export default function Home() {
           />
           
           <BaseplatePanel 
-            zoneIds={baseplateZoneIds}
+            baseplateZones={baseplateZones}
             renderZone={renderZone}
           />
         </div>
 
         <DragOverlay>
           {activeId ? (
-            <div style={{ cursor: 'grabbing' }}>
               {zones[activeId] ? renderZone(activeId) : renderSection(activeId)}
             </div>
           ) : null}
