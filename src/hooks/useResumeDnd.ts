@@ -187,7 +187,18 @@ export function useResumeDnD() {
       const x = over.data.current?.x;
       const y = over.data.current?.y;
 
-      console.log("zone", active.id, "dropped on grid cell", x, y)
+      setBaseplateZones(prev => {
+        const dropped = baseplateZones[active.id];
+
+        return {
+          ...prev,
+          [active.id]: {
+            ...prev[active.id],
+            x: x,
+            y: y,
+          }
+        }
+      })
     }
 
     // // Zone → Baseplate
