@@ -22,8 +22,11 @@ interface SectionBlockData {
     LabelIds: string[];
 }
 
-interface ZoneBlockData {
+export interface ZoneBlockData {
     id: string;
+    length: number;
+    width: number;
+
     labelId: string;
     sectionIds: string[];
 }
@@ -38,8 +41,6 @@ export interface BaseplateZoneData {
     id: string;
     x: number;
     y: number;
-    length: number;
-    width: number;
 }
 
 export type BaseplateZonesData = Record<string, BaseplateZoneData>;

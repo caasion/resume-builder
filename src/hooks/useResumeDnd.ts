@@ -7,13 +7,17 @@ export function useResumeDnD() {
   const [zones, setZones] = useState<ZonesData>({
     'zone-experience': {
       id: 'zone-experience',
+      length: 10,
+      width: 10,
       labelId: 'label-experience',
-      sectionIds: ['section-uwaterloo']
+      sectionIds: ['section-uwaterloo'],
     },
     'zone-education': {
       id: 'zone-education',
+      length: 10,
+      width: 10,
       labelId: 'label-education',
-      sectionIds: ['section-mit']
+      sectionIds: ['section-mit'],
     }
   });
 
@@ -95,6 +99,8 @@ export function useResumeDnD() {
         id: newId,
         labelId: "label-new-zone",
         sectionIds: [],
+        length: 10,
+        width: 10,
       }
 
       return {
@@ -162,9 +168,7 @@ export function useResumeDnD() {
     "zone-experience": {
       id: "zone-experience",
       x: 0,
-      y: 2,
-      length: 10,
-      width: 10,
+      y: 2
     }
   });
 
